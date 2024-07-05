@@ -45,6 +45,14 @@ const createOrderIntoDB = async (createOrder: TOrder) => {
     console.log(error, "from service");
   }
 };
+const getOrdersFromDB = async () => {
+  const result = await OrderModel.find();
+  return result;
+};
+const getOrderFromDB = async (email: string) => {
+  const result = await OrderModel.findOne({ email });
+  return result;
+};
 
 export const orderServices = {
   createOrderIntoDB,
