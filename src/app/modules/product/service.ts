@@ -5,7 +5,10 @@ const createProductIntoDB = async (createProduct: TProduct) => {
   const result = await ProductModel.create(createProduct);
   return result;
 };
-const getProductsFromDB = async () => {};
+const getProductsFromDB = async () => {
+  const result = await ProductModel.find();
+  return result;
+};
 const getProductFromDB = async (id: string) => {};
 const updateProductFromDB = async (
   id: string,
