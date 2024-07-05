@@ -17,7 +17,10 @@ const updateProductFromDB = async (
   id: string,
   updateData: Partial<TProduct>
 ) => {
-  const result = await ProductModel.findOneAndUpdate({ _id: id }, updateData);
+  console.log("ahma");
+  const result = await ProductModel.findOneAndUpdate({ _id: id }, updateData, {
+    new: true,
+  });
   return result;
 };
 

@@ -1,8 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { productServices } from "./service";
 import productValidationZodSchema from "./validation";
 
-const createProduct = async (req: Request, res: Response) => {
+const createProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const productData = req.body;
     const productZodParsed = productValidationZodSchema.parse(productData);
@@ -15,14 +19,10 @@ const createProduct = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "product not created!",
-      error: error,
-    });
+    next(error);
   }
 };
-const getProducts = async (req: Request, res: Response) => {
+const getProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await productServices.getProductsFromDB();
 
@@ -32,14 +32,10 @@ const getProducts = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "product not found!",
-      error: error,
-    });
+    next(error);
   }
 };
-const getProduct = async (req: Request, res: Response) => {
+const getProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.productId;
     const result = await productServices.getProductFromDB(id);
@@ -50,14 +46,14 @@ const getProduct = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "product not found!",
-      error: error,
-    });
+    next(error);
   }
 };
-const deleteProduct = async (req: Request, res: Response) => {
+const deleteProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const id = req.params.productId;
     console.log(id, "try");
@@ -69,16 +65,16 @@ const deleteProduct = async (req: Request, res: Response) => {
       data: null,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "product not deleted!",
-      error: error,
-    });
+    next(error);
   }
 };
-const updateProduct = async (req: Request, res: Response) => {
+const updateProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const id = req.params.productId;
+    const id = req.params.poductId;
     const updateData = req.body;
     const result = await productServices.updateProductFromDB(id, updateData);
 
@@ -87,12 +83,13 @@ const updateProduct = async (req: Request, res: Response) => {
       message: "product updated successfully",
       data: result,
     });
+    // res.status(200).json({
+    //   success: true,
+    //   message: "product updated successfully",
+    //   data: result,
+    // });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "product not updated!",
-      error: error,
-    });
+    next(error);
   }
 };
 
