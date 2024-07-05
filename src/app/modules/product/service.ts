@@ -16,7 +16,10 @@ const getProductFromDB = async (id: string) => {
 const updateProductFromDB = async (
   id: string,
   updateData: Partial<TProduct>
-) => {};
+) => {
+  const result = await ProductModel.findOneAndUpdate({ _id: id }, updateData);
+  return result;
+};
 
 const deleteProductFromDB = async (id: string) => {};
 
