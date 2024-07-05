@@ -9,7 +9,10 @@ const getProductsFromDB = async () => {
   const result = await ProductModel.find();
   return result;
 };
-const getProductFromDB = async (id: string) => {};
+const getProductFromDB = async (id: string) => {
+  const result = await ProductModel.findById({ _id: id });
+  return result;
+};
 const updateProductFromDB = async (
   id: string,
   updateData: Partial<TProduct>
