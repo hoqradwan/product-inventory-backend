@@ -1,4 +1,3 @@
-// import express, { Application, Request, Response } from "express";
 import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { productRoutes } from "./app/modules/product/route";
@@ -6,13 +5,20 @@ import { ordersRoutes } from "./app/modules/order/route";
 const app: Application = express();
 
 //parser
-app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // all root routes
 app.use("/api/products", productRoutes);
 app.use("/api/orders", ordersRoutes);
+
+app.get("/", (req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    message: "Welcome The Application working",
+  });
+});
 
 // 404 Error Handler
 app.all("*", (req: Request, res: Response) => {
