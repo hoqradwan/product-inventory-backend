@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { productServices } from "./service";
-import productValidationZodSchema from "./validation";
+import { zodValidation } from "./validation";
 
 const createProduct = async (
   req: Request,
@@ -9,7 +9,8 @@ const createProduct = async (
 ) => {
   try {
     const productData = req.body;
-    const productZodParsed = productValidationZodSchema.parse(productData);
+    const productZodParsed =
+      zodValidation.productCreateSchema.parse(productData);
 
     const result = await productServices.createProductIntoDB(productZodParsed);
 
@@ -56,13 +57,12 @@ const deleteProduct = async (
 ) => {
   try {
     const id = req.params.productId;
-    console.log(id, "try");
-    const result = await productServices.deleteProductFromDB(id);
-    console.log(result);
+    let result = await productServices.deleteProductFromDB(id);
+    result = null;
     res.status(200).json({
       success: true,
       message: "product deleted successfully",
-      data: null,
+      data: result,
     });
   } catch (error) {
     next(error);
@@ -74,9 +74,15 @@ const updateProduct = async (
   next: NextFunction
 ) => {
   try {
-    const id = req.params.poductId;
+    const productId = req.params.productId;
     const updateData = req.body;
-    const result = await productServices.updateProductFromDB(id, updateData);
+    const zodValidatedData =
+      zodValidation.productUpdateSchema.parse(updateData);
+
+    const result = await productServices.updateProductFromDB(
+      productId,
+      zodValidatedData
+    );
 
     res.status(200).json({
       success: true,

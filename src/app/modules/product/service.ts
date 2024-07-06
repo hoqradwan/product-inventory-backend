@@ -11,16 +11,19 @@ const getProductsFromDB = async () => {
 };
 const getProductFromDB = async (id: string) => {
   const result = await ProductModel.findById({ _id: id });
+  if (!result) {
+    throw new Error("Order not found");
+  }
   return result;
 };
 const updateProductFromDB = async (
   id: string,
   updateData: Partial<TProduct>
 ) => {
-  console.log("ahma");
   const result = await ProductModel.findOneAndUpdate({ _id: id }, updateData, {
     new: true,
   });
+
   return result;
 };
 

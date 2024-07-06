@@ -8,9 +8,9 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
     const orderZodParsed = productValidationZodSchema.parse(orderData);
 
     const result = await orderServices.createOrderIntoDB(orderZodParsed);
-    if (!result) {
-      next("saf");
-    }
+    // if (!result) {
+    //   next("saf");
+    // }
     res.status(200).json({
       success: true,
       message: "Order created successfully",

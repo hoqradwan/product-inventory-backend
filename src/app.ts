@@ -1,5 +1,5 @@
 // import express, { Application, Request, Response } from "express";
-import express, { Application, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { productRoutes } from "./app/modules/product/route";
 import { ordersRoutes } from "./app/modules/order/route";
@@ -29,13 +29,36 @@ app.all("*", (req: Request, res: Response) => {
 
 // Global Error Handler
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-app.use((err: any, req: Request, res: Response) => {
-  console.error(err.stack, "from global");
-  if (err) {
+// app.use((err: any, req: Request, res: Response) => {
+//   // console.log(err.stack, "from global");
+//   console.log("I am global");
+//   if (err) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Order not found",
+//     });
+//   }
+// });
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  // console.log(err, "global-1");
+  // console.log(err.error, "global-2");
+  // console.log(err.stack, "global-3");
+  // console.log(err.message, "global-4");
+  if (err.message == "Insufficient quantity available in inventory") {
     res.status(500).json({
       success: false,
-      message: "Order not found",
+      message: "Insufficient quantity available in inventory",
     });
+  } else {
+    if (err) {
+      res.status(500).json({
+        success: false,
+        message: "Order not found",
+      });
+    } else {
+      next();
+    }
   }
 });
 export default app;
