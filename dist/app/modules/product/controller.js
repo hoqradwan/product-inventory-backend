@@ -8,17 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.productControllers = void 0;
 const service_1 = require("./service");
-const validation_1 = __importDefault(require("./validation"));
+const validation_1 = require("./validation");
 const createProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const productData = req.body;
-        const productZodParsed = validation_1.default.parse(productData);
+        const productZodParsed = validation_1.zodValidation.productCreateSchema.parse(productData);
         const result = yield service_1.productServices.createProductIntoDB(productZodParsed);
         res.status(200).json({
             success: true,
@@ -32,7 +29,8 @@ const createProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 });
 const getProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield service_1.productServices.getProductsFromDB();
+        const searchTerm = req.query.searchTerm;
+        const result = yield service_1.productServices.getProductsFromDB(searchTerm);
         res.status(200).json({
             success: true,
             message: "products retrieve successfully",
@@ -60,13 +58,12 @@ const getProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 const deleteProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.productId;
-        console.log(id, "try");
-        const result = yield service_1.productServices.deleteProductFromDB(id);
-        console.log(result);
+        let result = yield service_1.productServices.deleteProductFromDB(id);
+        result = null;
         res.status(200).json({
             success: true,
             message: "product deleted successfully",
-            data: null,
+            data: result,
         });
     }
     catch (error) {
@@ -75,19 +72,17 @@ const deleteProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 });
 const updateProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const id = req.params.poductId;
+        const productId = req.params.productId;
         const updateData = req.body;
-        const result = yield service_1.productServices.updateProductFromDB(id, updateData);
+        // const zodValidatedData =
+        //   zodValidation.productUpdateSchema.parse(updateData);
+        const zodValidatedData = validation_1.zodValidation.productUpdateSchema.parse(updateData);
+        const result = yield service_1.productServices.updateProductFromDB(productId, zodValidatedData);
         res.status(200).json({
             success: true,
             message: "product updated successfully",
             data: result,
         });
-        // res.status(200).json({
-        //   success: true,
-        //   message: "product updated successfully",
-        //   data: result,
-        // });
     }
     catch (error) {
         next(error);

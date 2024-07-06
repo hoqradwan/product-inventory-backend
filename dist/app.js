@@ -13,13 +13,9 @@ const app = (0, express_1.default)();
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
+// all root routes
 app.use("/api/products", route_1.productRoutes);
 app.use("/api/orders", route_2.ordersRoutes);
-// app.get("/api/product", (req: Request, res: Response) => {
-//   const a = "Hello World!";
-//   console.log(req.body);
-//   res.send(a);
-// });
 // 404 Error Handler
 app.all("*", (req, res) => {
     res.status(404).json({
@@ -29,13 +25,23 @@ app.all("*", (req, res) => {
 });
 // Global Error Handler
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-app.use((err, req, res) => {
-    console.error(err.stack, "from global");
-    if (err) {
+app.use((err, req, res, next) => {
+    if (err.message == "Insufficient quantity available in inventory") {
         res.status(500).json({
             success: false,
-            message: "Order not found",
+            message: "Insufficient quantity available in inventory",
         });
+    }
+    else {
+        if (err) {
+            res.status(500).json({
+                success: false,
+                message: "Order not found",
+            });
+        }
+        else {
+            next();
+        }
     }
 });
 exports.default = app;

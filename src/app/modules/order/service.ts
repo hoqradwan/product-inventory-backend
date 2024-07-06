@@ -39,12 +39,13 @@ const createOrderIntoDB = async (createOrder: TOrder) => {
   return orderCreated;
 };
 
-const getOrdersFromDB = async (email?: string) => {
-  let query = {};
-  if (email) {
-    query = { email: email };
-  }
+const getOrdersFromDB = async (email: string) => {
+  // let query = {};
+  // if (email) {
+  //   query = { email: email };
+  // }
 
+  const query = email ? { email: email } : {};
   const result = await OrderModel.find(query);
   return result;
 };

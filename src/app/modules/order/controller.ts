@@ -22,7 +22,9 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
 const getOrders = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const email = req.query.email;
-
+    if (typeof email !== "string") {
+      throw new Error("Email parameter is required and must be a string");
+    }
     const result = await orderServices.getOrdersFromDB(email);
     res.status(200).json({
       success: true,

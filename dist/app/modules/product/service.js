@@ -15,16 +15,22 @@ const createProductIntoDB = (createProduct) => __awaiter(void 0, void 0, void 0,
     const result = yield model_1.ProductModel.create(createProduct);
     return result;
 });
-const getProductsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield model_1.ProductModel.find();
+const getProductsFromDB = (searchTerm) => __awaiter(void 0, void 0, void 0, function* () {
+    let query = {};
+    if (searchTerm) {
+        query = { name: new RegExp(searchTerm, "i") }; // 'i' makes the search case-insensitive
+    }
+    const result = yield model_1.ProductModel.find(query);
     return result;
 });
 const getProductFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield model_1.ProductModel.findById({ _id: id });
+    if (!result) {
+        throw new Error("Order not found");
+    }
     return result;
 });
 const updateProductFromDB = (id, updateData) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("ahma");
     const result = yield model_1.ProductModel.findOneAndUpdate({ _id: id }, updateData, {
         new: true,
     });

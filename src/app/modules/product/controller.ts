@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { productServices } from "./service";
 import { zodValidation } from "./validation";
+import { TProductUpdate } from "./interface";
 
 const createProduct = async (
   req: Request,
@@ -77,8 +78,12 @@ const updateProduct = async (
   try {
     const productId = req.params.productId;
     const updateData = req.body;
-    const zodValidatedData =
-      zodValidation.productUpdateSchema.parse(updateData);
+    // const zodValidatedData =
+    //   zodValidation.productUpdateSchema.parse(updateData);
+
+    const zodValidatedData = zodValidation.productUpdateSchema.parse(
+      updateData
+    ) as TProductUpdate;
 
     const result = await productServices.updateProductFromDB(
       productId,

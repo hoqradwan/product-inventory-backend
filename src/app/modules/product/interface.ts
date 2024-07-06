@@ -1,32 +1,12 @@
-// export type Variant = {
-//   type: string;
-//   value: string;
-// };
-// export type Inventory = {
-//   quantity: number;
-//   inStock: boolean;
-// };
-// export type TProduct = {
-//   name: string;
-//   description: string;
-//   price: number;
-//   category: string;
-//   tags: string[];
-//   variants: Variant[];
-//   inventory: Inventory;
-// };
-
-export interface Inventory {
-  quantity: number;
-  inStock: boolean;
-}
-
-export interface Variant {
+export type Variant = {
   type: string;
   value: string;
-}
-
-export interface TProduct {
+};
+export type Inventory = {
+  quantity: number;
+  inStock: boolean;
+};
+export type TProduct = {
   name: string;
   description: string;
   price: number;
@@ -34,14 +14,6 @@ export interface TProduct {
   tags: string[];
   variants: Variant[];
   inventory: Inventory;
-}
+};
 
-export interface TProductUpdate {
-  name?: string;
-  description?: string;
-  price?: number;
-  category?: string;
-  tags?: string[];
-  variants?: Variant[];
-  inventory?: Partial<Inventory>;
-}
+export type TProductUpdate = Partial<TProduct>;

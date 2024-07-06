@@ -12,7 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// getting-started.js
 const mongoose_1 = __importDefault(require("mongoose"));
 const app_1 = __importDefault(require("./app"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -24,6 +23,6 @@ function main() {
     });
 }
 app_1.default.listen(config_1.default.port, () => {
-    console.log(`Example app listening on port ${config_1.default.port}`);
+    console.log(`Application is listening on port ${config_1.default.port}`);
 });
 main();

@@ -20,9 +20,6 @@ const createOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         const orderData = req.body;
         const orderZodParsed = validation_1.default.parse(orderData);
         const result = yield service_1.orderServices.createOrderIntoDB(orderZodParsed);
-        if (!result) {
-            next("saf");
-        }
         res.status(200).json({
             success: true,
             message: "Order created successfully",
@@ -36,22 +33,15 @@ const createOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 const getOrders = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const email = req.query.email;
-        if (email) {
-            const result = yield service_1.orderServices.getOrderFromDB(email);
-            res.status(200).json({
-                success: true,
-                message: "Orders fetched successfully for user email!",
-                data: result,
-            });
+        if (typeof email !== "string") {
+            throw new Error("Email parameter is required and must be a string");
         }
-        else {
-            const result = yield service_1.orderServices.getOrdersFromDB();
-            res.status(200).json({
-                success: true,
-                message: "Orders fetched successfully",
-                data: result,
-            });
-        }
+        const result = yield service_1.orderServices.getOrdersFromDB(email);
+        res.status(200).json({
+            success: true,
+            message: "Orders fetched successfully for user email!",
+            data: result,
+        });
     }
     catch (error) {
         next(error);
