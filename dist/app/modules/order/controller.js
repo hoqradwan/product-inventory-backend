@@ -33,9 +33,6 @@ const createOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 const getOrders = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const email = req.query.email;
-        if (typeof email !== "string") {
-            throw new Error("Email parameter is required and must be a string");
-        }
         const result = yield service_1.orderServices.getOrdersFromDB(email);
         res.status(200).json({
             success: true,

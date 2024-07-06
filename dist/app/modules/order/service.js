@@ -40,6 +40,7 @@ const createOrderIntoDB = (createOrder) => __awaiter(void 0, void 0, void 0, fun
     );
     return orderCreated;
 });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getOrdersFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
     // let query = {};
     // if (email) {

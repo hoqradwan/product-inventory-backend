@@ -39,7 +39,8 @@ const createOrderIntoDB = async (createOrder: TOrder) => {
   return orderCreated;
 };
 
-const getOrdersFromDB = async (email: string) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getOrdersFromDB = async (email: any) => {
   // let query = {};
   // if (email) {
   //   query = { email: email };
