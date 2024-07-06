@@ -25,7 +25,8 @@ const createProduct = async (
 };
 const getProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const result = await productServices.getProductsFromDB();
+    const searchTerm = req.query.searchTerm as string;
+    const result = await productServices.getProductsFromDB(searchTerm);
 
     res.status(200).json({
       success: true,
@@ -89,11 +90,6 @@ const updateProduct = async (
       message: "product updated successfully",
       data: result,
     });
-    // res.status(200).json({
-    //   success: true,
-    //   message: "product updated successfully",
-    //   data: result,
-    // });
   } catch (error) {
     next(error);
   }
