@@ -1,4 +1,4 @@
-# mongoose-master-assign2
+# Product Inventory
 
 ## Description
 
